@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard IoT - Lab 2</title>
+    <style>
+        body { font-family: sans-serif; margin: 30px; background: #f4f6f8; }
+        .grid { display: flex; gap: 20px; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex: 1; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #007bff; color: white; }
+    </style>
+</head>
+<body>
+    <h2>Monitoreo en Tiempo Real - Lab 2 Backend IoT</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>Dispositivos Registrados</h3>
+            <table id="devs"><tr><th>ID</th><th>Nodo</th><th>Última Conexión</th></tr></table>
+        </div>
+        <div class="card">
+            <h3>Últimos Eventos / Alarmas</h3>
+            <table id="evts"><tr><th>Dispositivo</th><th>Tipo</th><th>Severidad</th></tr></table>
+        </div>
+    </div>
+    <script>
+        async function loadData() {
+            const rDev = await fetch('/lab2-backend/public/api/v1/devices');
+            const dDev = await rDev.json();
+            const tDev = document.getElementById('devs');
+            tDev.innerHTML = '<tr><th>ID</th><th>Nodo</th><th>Última Conexión</th></tr>';
+            dDev.data.forEach(d => tDev.innerHTML += `<tr><td>${d.id}</td><td>${d.node_id}</td><td>${d.last_seen || 'N/A'}</td></tr>`);
+
+            const rEvt = await fetch('/lab2-backend/public/api/v1/events');
+            const dEvt = await rEvt.json();
+            const tEvt = document.getElementById('evts');
+            tEvt.innerHTML = '<tr><th>Dispositivo</th><th>Tipo</th><th>Severidad</th></tr>';
+            dEvt.data.slice(0, 10).forEach(e => tEvt.innerHTML += `<tr><td>${e.device_id}</td><td>${e.type}</td><td>${e.severity}</td></tr>`);
+        }
+        setInterval(loadData, 3000);
+        loadData();
+    </script>
+</body>
+</html>

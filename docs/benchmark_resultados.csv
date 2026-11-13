@@ -1,0 +1,5 @@
+concurrencia,throughput_req_s,latencia_p50_ms,latencia_p95_ms,errores
+1,14.95,47.73,163.67,0
+5,216.48,18.5,39.07,0
+10,268.51,32.67,65.54,0
+20,354.82,48.42,66.6,0
