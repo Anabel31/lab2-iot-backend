@@ -7,7 +7,7 @@ Backend modular con arquitectura desacoplada sobre **PHP 8**, **MySQL**, **Apach
 - `src/Controllers/`: Controladores HTTP (`Telemetry`, `Device`, `Config`, `Command`, `Event`).
 - `src/Services/`: Validacion fisica (-40 a 85 C), idempotencia (HTTP 409) y alertas.
 - `src/Repositories/`: Persistencia mediante PDO y sentencias preparadas.
-- `mqtt/listener.py`: Suscriptor MQTT con ACK posterior a la persistencia en MySQL.
+- `mqtt/listener.py`: Suscriptor MQTT que invoca ``php.exe subscriber.php`` por mensaje llamando directamente a ``TelemetryService``, publicando el ACK tras confirmar la persistencia en MySQL.
 - `tests/`: Suite de pruebas (`pruebas_extra.ps1`, `prueba_mqtt_duplicado.py`, `benchmark_mqtt_lat.py`).
 
 ## Resultados Benchmark MQTT (100 mensajes)
